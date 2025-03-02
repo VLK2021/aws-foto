@@ -79,15 +79,21 @@ const PhotoGallery = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-8">
-      <ToastContainer position="bottom-right" theme="colored" />
+    <div className="h-full flex flex-col">
+      <ToastContainer 
+        position="bottom-right" 
+        theme="colored" 
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+      />
       
       {/* Upload Section */}
       <div
-        className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 ease-in-out
+        className={`relative border border-dashed rounded-md p-2 mb-3 text-center transition-all duration-200 ease-in-out
           ${dragActive 
-            ? 'border-blue-500 bg-blue-50' 
-            : 'border-gray-300 hover:border-gray-400 bg-white'
+            ? 'border-blue-400 bg-blue-50/50' 
+            : 'border-gray-200 hover:border-gray-300 bg-white'
           }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -101,68 +107,61 @@ const PhotoGallery = () => {
           disabled={loading}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
-        <div className="space-y-4">
-          <div className="flex justify-center">
-            <svg 
-              className={`w-12 h-12 transition-colors duration-300 ${dragActive ? 'text-blue-500' : 'text-gray-400'}`}
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-              />
-            </svg>
-          </div>
-          <div className="text-lg">
-            {loading ? (
-              <span className="text-blue-500">Uploading...</span>
-            ) : (
-              <span className={dragActive ? 'text-blue-500' : 'text-gray-600'}>
-                Drag and drop your photos here or click to select
-              </span>
-            )}
-          </div>
+        <div className="flex items-center justify-center gap-2">
+          <svg 
+            className={`w-4 h-4 transition-colors duration-200 ${dragActive ? 'text-blue-500' : 'text-gray-400'}`}
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            />
+          </svg>
+          <span className={`text-xs font-medium ${loading ? 'text-blue-500' : dragActive ? 'text-blue-500' : 'text-gray-500'}`}>
+            {loading ? 'Uploading...' : 'Drop photos here or click to upload'}
+          </span>
         </div>
       </div>
 
       {/* Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {photos.map((photo) => (
-          <div 
-            key={photo.key} 
-            className="group relative overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:scale-[1.02]"
-          >
-            <div className="aspect-w-1 aspect-h-1">
+      <div className="flex-1 overflow-y-auto pr-2 -mr-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {photos.map((photo) => (
+            <div 
+              key={photo.key} 
+              className="group relative aspect-square overflow-hidden rounded-md bg-gray-100"
+            >
               <img
                 src={photo.url}
                 alt="Gallery"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 opacity-0 group-hover:opacity-100 transition-all duration-200">
+                <button
+                  onClick={() => handleDelete(photo.key)}
+                  className="absolute bottom-1.5 right-1.5 bg-red-500/80 hover:bg-red-600 text-white text-xs px-1.5 py-0.5 rounded 
+                    backdrop-blur-sm transition-all duration-200 translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <button
-                onClick={() => handleDelete(photo.key)}
-                className="absolute bottom-4 right-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Empty State */}
-      {photos.length === 0 && !loading && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-lg">
-            No photos uploaded yet. Start by uploading your first photo!
-          </div>
+          ))}
         </div>
-      )}
+
+        {/* Empty State */}
+        {photos.length === 0 && !loading && (
+          <div className="text-center py-4">
+            <div className="text-gray-400 text-xs">
+              No photos uploaded yet
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
