@@ -79,7 +79,7 @@ const PhotoGallery = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col space-y-2">
       <ToastContainer 
         position="bottom-right" 
         theme="colored" 
@@ -90,7 +90,7 @@ const PhotoGallery = () => {
       
       {/* Upload Section */}
       <div
-        className={`relative border border-dashed rounded-md p-2 mb-3 text-center transition-all duration-200 ease-in-out
+        className={`h-8 relative border border-dashed rounded-sm p-0.5 text-center transition-all duration-200 ease-in-out
           ${dragActive 
             ? 'border-blue-400 bg-blue-50/50' 
             : 'border-gray-200 hover:border-gray-300 bg-white'
@@ -107,9 +107,9 @@ const PhotoGallery = () => {
           disabled={loading}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center h-full gap-1">
           <svg 
-            className={`w-4 h-4 transition-colors duration-200 ${dragActive ? 'text-blue-500' : 'text-gray-400'}`}
+            className={`w-3 h-3 transition-colors duration-200 ${dragActive ? 'text-blue-500' : 'text-gray-400'}`}
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24"
@@ -118,33 +118,35 @@ const PhotoGallery = () => {
               strokeLinecap="round" 
               strokeLinejoin="round" 
               strokeWidth="2" 
-              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+              d="M12 4v16m8-8H4"
             />
           </svg>
-          <span className={`text-xs font-medium ${loading ? 'text-blue-500' : dragActive ? 'text-blue-500' : 'text-gray-500'}`}>
-            {loading ? 'Uploading...' : 'Drop photos here or click to upload'}
+          <span className={`text-[11px] ${loading ? 'text-blue-500' : dragActive ? 'text-blue-500' : 'text-gray-500'}`}>
+            {loading ? 'Uploading...' : 'Add photo'}
           </span>
         </div>
       </div>
 
       {/* Gallery Grid */}
-      <div className="flex-1 overflow-y-auto pr-2 -mr-2">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+      <div className="flex-1 overflow-y-auto">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
           {photos.map((photo) => (
             <div 
               key={photo.key} 
-              className="group relative aspect-square overflow-hidden rounded-md bg-gray-100"
+              className="relative w-[150px] h-[150px] overflow-hidden rounded-sm bg-gray-100"
             >
               <img
                 src={photo.url}
                 alt="Gallery"
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-full object-cover"
+                loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 opacity-0 group-hover:opacity-100 transition-all duration-200">
+              <div 
+                className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+              >
                 <button
                   onClick={() => handleDelete(photo.key)}
-                  className="absolute bottom-1.5 right-1.5 bg-red-500/80 hover:bg-red-600 text-white text-xs px-1.5 py-0.5 rounded 
-                    backdrop-blur-sm transition-all duration-200 translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+                  className="bg-red-500/90 hover:bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-sm"
                 >
                   Delete
                 </button>
@@ -155,8 +157,8 @@ const PhotoGallery = () => {
 
         {/* Empty State */}
         {photos.length === 0 && !loading && (
-          <div className="text-center py-4">
-            <div className="text-gray-400 text-xs">
+          <div className="text-center py-2">
+            <div className="text-gray-400 text-[11px]">
               No photos uploaded yet
             </div>
           </div>
