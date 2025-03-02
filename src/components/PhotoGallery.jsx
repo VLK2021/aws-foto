@@ -79,7 +79,7 @@ const PhotoGallery = () => {
   };
 
   return (
-    <div className="h-full flex flex-col space-y-2">
+    <div className="w-full flex flex-col space-y-2">
       <ToastContainer 
         position="bottom-right" 
         theme="colored" 
@@ -90,7 +90,7 @@ const PhotoGallery = () => {
       
       {/* Upload Section */}
       <div
-        className={`h-8 relative border border-dashed rounded-sm p-0.5 text-center transition-all duration-200 ease-in-out
+        className={`w-[80%] relative border border-dashed rounded-sm p-0.5 text-center transition-all duration-200 ease-in-out
           ${dragActive 
             ? 'border-blue-400 bg-blue-50/50' 
             : 'border-gray-200 hover:border-gray-300 bg-white'
